@@ -21,6 +21,8 @@ class Robot : public IterativeRobot {
 public:
 	void TeleopPeriodic() {
 
+		printf("%s() : using ArcadeDrive", __FUNCTION__ );
+
 		// drive with arcade style
 		m_robotDrive.ArcadeDrive(m_stick.GetY(), m_stick.GetX());
 	}
