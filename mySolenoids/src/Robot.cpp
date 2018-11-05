@@ -10,6 +10,8 @@
 #include <Joystick.h>
 #include <Solenoid.h>
 
+using namespace frc;
+
 /**
  * This is a sample program showing the use of the solenoid classes during
  *   operator control.
@@ -33,35 +35,42 @@ public:
 		 * the button is pressed; Set takes a boolean for for whether to
 		 * use the default (false) channel or the other (true).
 		 */
-		m_solenoid.Set(m_stick.GetRawButton(kSolenoidButton));
+		m_singleSolenoid.Set(m_stick.GetRawButton(kSingleSolenoidButton));
 
-		/* In order to set the double solenoid, we will say that if
-		 * neither
+		/* In order to set the double solenoid, we will say that if neither
 		 * button is pressed, it is off, if just one button is pressed,
 		 * set the solenoid to correspond to that button, and if both
 		 * are pressed, set the solenoid to Forwards.
 		 */
-		if (m_stick.GetRawButton(kDoubleSolenoidForward)) {
-			m_doubleSolenoid.Set(frc::DoubleSolenoid::kForward);
-		} else if (m_stick.GetRawButton(kDoubleSolenoidReverse)) {
-			m_doubleSolenoid.Set(frc::DoubleSolenoid::kReverse);
-		} else {
-			m_doubleSolenoid.Set(frc::DoubleSolenoid::kOff);
+		if (m_stick.GetRawButton(kDoubleSolenoidForwardButton))
+		{
+			m_doubleSolenoid.Set(DoubleSolenoid::kForward);
+
+		} else if (m_stick.GetRawButton(kDoubleSolenoidReverseButton)) {
+
+			m_doubleSolenoid.Set(DoubleSolenoid::kReverse);
+
+		} else
+		{
+			m_doubleSolenoid.Set(DoubleSolenoid::kOff);
 		}
 	}
 
 private:
-	frc::Joystick m_stick{0};
+	static constexpr int kStick = 0;
 
-	// Solenoid corresponds to a single solenoid.
-	frc::Solenoid m_solenoid{0};
+	static constexpr int kSingleSolenoidChannel = 0;
+	static constexpr int kSingleSolenoidButton = 1;
 
-	// DoubleSolenoid corresponds to a double solenoid.
-	frc::DoubleSolenoid m_doubleSolenoid{1, 2};
+	static constexpr int kDoubleSolenoidChannelForward = 1;
+	static constexpr int kDoubleSolenoidChannelReverse = 2;
+	static constexpr int kDoubleSolenoidForwardButton = 2;
+	static constexpr int kDoubleSolenoidReverseButton = 3;
 
-	static constexpr int kSolenoidButton = 1;
-	static constexpr int kDoubleSolenoidForward = 2;
-	static constexpr int kDoubleSolenoidReverse = 3;
+	Joystick m_stick{kStick};
+
+	Solenoid m_singleSolenoid{kSingleSolenoidChannel};
+	DoubleSolenoid m_doubleSolenoid{kDoubleSolenoidChannelForward, kDoubleSolenoidChannelReverse};
 };
 
 START_ROBOT_CLASS(Robot)
